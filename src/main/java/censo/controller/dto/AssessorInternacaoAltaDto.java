@@ -59,7 +59,16 @@ public class AssessorInternacaoAltaDto {
 				internacao.setIn_sexo(resultSet.getString("in_sexo"));
 				internacao.setNr_idade(resultSet.getInt("nr_idade"));
 				internacao.setNr_quarto(resultSet.getString("nr_quarto"));
-				internacao.setNr_leito(resultSet.getString("nr_leito"));
+				String nr_leito = resultSet.getString("nr_leito");
+
+				if (nr_leito == null) {
+					internacao.setNr_leito("9999999");
+				} else {
+					
+					internacao.setNr_leito(nr_leito);
+				}
+				
+				
 				internacao.setNm_ala(resultSet.getString("nm_ala"));
 				internacao.setNm_clinica(resultSet.getString("nm_clinica"));
 				internacao.setNm_unidade_funcional(resultSet.getString("nm_unidade_funcional"));

@@ -55,11 +55,11 @@ public class AssessorPacienteDto {
 				    			_nome = _nome + "%";
 				    			_nome = _nome.replace("\'", "");
 				    			if(count == 1 ) {
-					    			strSql = strSql.concat( entry.getKey() + " like '" + _nome + "'");
+					    			strSql = strSql.concat( entry.getKey() + " like '%" + _nome + "'");
 					    		}
 					    		else
 					    		{
-					    			strSql = strSql.concat(" and "  + entry.getKey() + " like '" + _nome + "'");
+					    			strSql = strSql.concat(" and "  + entry.getKey() + " like '%" + _nome + "'");
 					    		}
 				    			 continue;
 				    		}
@@ -70,11 +70,11 @@ public class AssessorPacienteDto {
 				    			_nome = _nome + "%";
 				    			_nome = _nome.replace("\'", "");
 				    			if(count == 1 ) {
-					    			strSql = strSql.concat( entry.getKey() + " like '" + _nome + "'");
+					    			strSql = strSql.concat( entry.getKey() + " like '%" + _nome + "'");
 					    		}
 					    		else
 					    		{
-					    			strSql = strSql.concat(" and "  + entry.getKey() + " like '" + _nome + "'");
+					    			strSql = strSql.concat(" and "  + entry.getKey() + " like '%" + _nome + "'");
 					    		}
 				    			 continue;
 				    		}
@@ -113,17 +113,33 @@ public class AssessorPacienteDto {
 				    		if(entry.getKey() == "limit" )
 				    		{
 				    			String _nome  = entry.getValue();
-				    			
+				    			boolean isFound = strSql.indexOf("nm_nome") !=-1? true: false; 
 				    			
 				    			_nome = _nome.replace("\'", "");
+				    			
+				    			  if(isFound == false) {
 				    			if(count == 1 ) {
-					    			strSql = strSql.concat( entry.getKey()  + " " +_nome );
+					    			strSql = strSql.concat( entry.getKey()  + "  " +_nome );
 					    		}
 					    		else
 					    		{
-					    			strSql = strSql.concat(" "  + entry.getKey() + " " +  _nome );
+					    			strSql = strSql.concat(" "  + entry.getKey() + "  "  +  _nome );
 					    		}
 				    			 continue;
+				    			  }
+				    			  else {
+				    				  
+				    					if(count == 1 ) {
+							    			strSql = strSql.concat(" order by nm_nome ASC " + entry.getKey()  + "  " +_nome );
+							    		}
+							    		else
+							    		{
+							    			strSql = strSql.concat(" order by nm_nome ASC " +   entry.getKey() + "  "  +  _nome );
+							    		}
+						    			 continue;
+				    				  
+				    				  
+				    			  }
 				    		}
 				    		if(count == 1 ) {
 				    			strSql = strSql.concat( entry.getKey() + " = " + entry.getValue());
@@ -139,7 +155,9 @@ public class AssessorPacienteDto {
 			    }
 		
 		     count = 0;
-			String sqlString = strSql;
+		     
+		     String sqlString = strSql;
+		  
 			Connection conn = new Conexao().getConnection();
 			preparedStatement = conn.prepareStatement(sqlString);
 			ResultSet resultSet = preparedStatement.executeQuery();
